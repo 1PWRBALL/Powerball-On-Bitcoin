@@ -5,79 +5,79 @@ Bitcoin Address
 BTC: 1PWRBALL6xwyfQnWSSnxVk9bFjq7J42edH
 
 
-Powerball on Bitcoin
+    Powerball on Bitcoin
 
-The Powerball based game thats available to anyone in the world via Bitcoin
-We use Powerball Drawings to determine our Winners
-Our Algorithm is publicly available and thus 100% verifiable
-All Tickets/Prizes use Bitcoin exchange rate of: 1 Bitcoin = $7000 USD
-WE USE THE SATURDAY POWERBALL DRAWING TO DETERMINE WINNERS, CUTOFF TIME IS 10PM ET
-
-
-JACKPOT
-
-Jackpot Minimum starts at $5,000,000
-If 6% of the Bitcoin Balance is greater then $5,000,000 , then thats the new Jackpot
-Jackpot is split between winners of that drawing
+    The Powerball based game thats available to anyone in the world via Bitcoin
+    We use Powerball Drawings to determine our Winners
+    Our Algorithm is publicly available and thus 100% verifiable
+    All Tickets/Prizes use Bitcoin exchange rate of: 1 Bitcoin = $7000 USD
+    WE USE THE SATURDAY POWERBALL DRAWING TO DETERMINE WINNERS, CUTOFF TIME IS 10PM ET
 
 
-HOW TO PLAY:
+    JACKPOT
 
-Tickets = 0.0003 Bitcoin (roughly $2, varies with exchange rate)
-Quick Picks (Limit of 10,000 per Transaction)
-Just send a multiple of 1 tickets price, since each ticket = 0.0003 Bitcoin , 10 tickets = 0.003 Bitcoin
-Or Choose your Powerball and 1 Whiteball
-Choose 1 Powerball (1-26) and 1 White ball (1-69)
-Add these numbers to the ticket after the 3
-example: Base = 0.0003 + 05(PB) + 09(WB) = 0.00030509 Bitcoin
-We will generate the rest of the tickets white balls using those numbers!
-Thats it! whichever way you choose, send to the BTC address above and you are entered to win, any prizes you win will be sent back 
-to the address the ticket was sent from.
+    Jackpot Minimum starts at $5,000,000
+    If 6% of the Bitcoin Balance is greater then $5,000,000 , then thats the new Jackpot
+    Jackpot is split between winners of that drawing
 
 
-IMPORTANT!!
+    HOW TO PLAY:
 
-USE LOCAL WALLETS ONLY!! DO NOT USE ONLINE WALLETS UNLESS YOU CONTROL THE SENDING ADDRESS
-The reason for this is that in order for you to receive winnings, you must have control over the sending address (input address). 
-Otherwise who ever controls that address will receive the winnings. When sending from a online wallet, depending on how they work, 
-you may not actually have control over the address you sent from. They may send it from an address they just use to store Bitcoin, 
-then keep a DataBase of all the account balances. So when you send, it just subtracts from your account and then uses any Bitcoin 
-addresses it has to fund the transaction. Then if you happen to win, we send your prize back to the address but they would not know 
-who the money belongs too since many users may have used those same addresses. Your money is most likely lost at that point.
-
-TL:DR,
-
-It is best to use Local wallets only since you will always have control over any address you send from. So if you win a prize, 
-you will always receive the prize.
-
-Bitcoin.org Wallets
-Choose either Desktop Wallets, Hardware, Mobile as they are the safest. If you have the space, run a full node like Bitcoin Core or 
-Electrum if you don't.
+    Tickets = 0.0003 Bitcoin (roughly $2, varies with exchange rate)
+    Quick Picks (Limit of 10,000 per Transaction)
+    Just send a multiple of 1 tickets price, since each ticket = 0.0003 Bitcoin , 10 tickets = 0.003 Bitcoin
+    Or Choose your Powerball and 1 Whiteball
+    Choose 1 Powerball (1-26) and 1 White ball (1-69)
+    Add these numbers to the ticket after the 3
+    example: Base = 0.0003 + 05(PB) + 09(WB) = 0.00030509 Bitcoin
+    We will generate the rest of the tickets white balls using those numbers!
+    Thats it! whichever way you choose, send to the BTC address above and you are entered to win, any prizes you win will be sent back 
+    to the address the ticket was sent from.
 
 
-HOW IT WORKS
+    IMPORTANT!!
 
-You give us the PB and WB which we then use to generate the other 4 White balls for a complete Powerball ticket of 1 PB + 5 WB.
-We generate them using your PB + WB + Transaction Data. This way anyone can check what a ticket's 6 numbers are by just looking at 
-the Transaction Data, Then following our algorithm for generating complete Powerball tickets.
-For Quick picks, its the same basic idea as above except instead of only generating 4 white balls, 
-we generate each tickets PB + 5 WB. The seed is generated using only the Transaction Data + modifier for each ball.
+    USE LOCAL WALLETS ONLY!! DO NOT USE ONLINE WALLETS UNLESS YOU CONTROL THE SENDING ADDRESS
+    The reason for this is that in order for you to receive winnings, you must have control over the sending address (input address). 
+    Otherwise who ever controls that address will receive the winnings. When sending from a online wallet, depending on how they work, 
+    you may not actually have control over the address you sent from. They may send it from an address they just use to store Bitcoin, 
+    then keep a DataBase of all the account balances. So when you send, it just subtracts from your account and then uses any Bitcoin 
+    addresses it has to fund the transaction. Then if you happen to win, we send your prize back to the address but they would not know 
+    who the money belongs too since many users may have used those same addresses. Your money is most likely lost at that point.
+
+    TL:DR,
+
+    It is best to use Local wallets only since you will always have control over any address you send from. So if you win a prize, 
+    you will always receive the prize.
+
+    Bitcoin.org Wallets
+    Choose either Desktop Wallets, Hardware, Mobile as they are the safest. If you have the space, run a full node like Bitcoin Core or 
+    Electrum if you don't.
 
 
-ALGORITHM
+    HOW IT WORKS
 
-We generate a seed value based on your PB, WB (unless its a quick pick, in which case these are not available to use) , 
-transaction time and transaction id (we remove all Letters and keep the numbers, then shorten it). We then just use the 
-PHP function mt_srand and mt_rand.
-After generating the 4 other White Ball's (or 1PB + 5WB for quick picks), we have a complete Ticket, 
-which we then use to compare against the actual Powerball Drawings. If you win in PowerBall, you win here 
-since we use their numbers to determine winners.
-All our payout's are actually higher then Powerball except for the Jackpots, our Jackpots start at $5,000,000 
-instead of Powerball's $40,000,000, this allows the lower lvl winners (more winners) to win more.
+    You give us the PB and WB which we then use to generate the other 4 White balls for a complete Powerball ticket of 1 PB + 5 WB.
+    We generate them using your PB + WB + Transaction Data. This way anyone can check what a ticket's 6 numbers are by just looking at 
+    the Transaction Data, Then following our algorithm for generating complete Powerball tickets.
+    For Quick picks, its the same basic idea as above except instead of only generating 4 white balls, 
+    we generate each tickets PB + 5 WB. The seed is generated using only the Transaction Data + modifier for each ball.
 
 
-PHP CODE BELOW, It uses the Codeigniter Framework
-Javascript available by viewing page source
+    ALGORITHM
+
+    We generate a seed value based on your PB, WB (unless its a quick pick, in which case these are not available to use) , 
+    transaction time and transaction id (we remove all Letters and keep the numbers, then shorten it). We then just use the 
+    PHP function mt_srand and mt_rand.
+    After generating the 4 other White Ball's (or 1PB + 5WB for quick picks), we have a complete Ticket, 
+    which we then use to compare against the actual Powerball Drawings. If you win in PowerBall, you win here 
+    since we use their numbers to determine winners.
+    All our payout's are actually higher then Powerball except for the Jackpots, our Jackpots start at $5,000,000 
+    instead of Powerball's $40,000,000, this allows the lower lvl winners (more winners) to win more.
+
+
+    PHP CODE BELOW, It uses the Codeigniter Framework
+    Javascript available by viewing page source
 
     //Generating Start,
     //This is just the Ticket generation code, all the other code we have is for gathering all Transactions, processing the winning     //tickets (which is really just, does this ticket have any winning numbers, if so what did it win etc..) and finally processing the //Payouts.
