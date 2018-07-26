@@ -61,160 +61,73 @@ After generating the 4 other White Ball's (or 1PB + 5WB for quick picks), we hav
 All our payout's are actually higher then Powerball except for the Jackpots, our Jackpots start at $5,000,000 instead of Powerball's $40,000,000, this allows the lower lvl winners (more winners) to win more.
 
 
-PHP CODE BELOW
+PHP CODE BELOW, It uses the Codeigniter Framework
 Javascript available by viewing page source
 
-//Generating Start,
-//This is just the Ticket generation code, all the other code we have is for gathering all Transactions, processing the winning tickets (which is really just, does this ticket have any winning numbers, if so what did it win etc..) and finally processing the Payouts.
+    //Generating Start,
+    //This is just the Ticket generation code, all the other code we have is for gathering all Transactions, processing the winning     //tickets (which is really just, does this ticket have any winning numbers, if so what did it win etc..) and finally processing the //Payouts.
 
-//Values used in both ifs
-//get the blocktime
-$time = floatval($result_array[$i]['time']);
+    //Values used in both ifs
+    //get the blocktime
+    $time = floatval($result_array[$i]['time']);
 
-//Get the numbers in the hash and use as part of seed
-$hash = $result_array[$i]['txid'];
-$formated = str_replace("0", $hash);
-$new_string = preg_replace('/[^0-9]/', '', $formated);
+    //Get the numbers in the hash and use as part of seed
+    $hash = $result_array[$i]['txid'];
+    $formated = str_replace("0", $hash);
+    $new_string = preg_replace('/[^0-9]/', '', $formated);
 
-$hash = $new_string;
-if(strlen($hash) > 9)
-{
-    $hash = substr($hash, 0, 9);
-}
-
-//First make sure the ticket fee minimum was paid, then if 
-//more then 1 tickets worth was paid
-//If 2 or more tickets paid for, randomly generated 
-//tickets = number of tickets paid for, All tickets associated 
-//with same address 
-
-//get the valueOut to the $lotto_address
-(float)$amnt_paid = floatval($result_array[$i]['valueOut']);
-(int)$total_tickets = floor($amnt_paid / 0.0003);
-(int)$max_tickets = 10000;
-
-if($total_tickets > $max_tickets)
-{
-    $total_tickets = $max_tickets;
-}
-
-if($amnt_paid >= 0.00030000 && $total_tickets < 2)
-{                      
-    $valueout = number_format($result_array[$i]['valueOut'],8);
-    //Picks are the 4 last digits, 2 digits per number pick
-    $pb   = substr($valueout,(strpos($valueout, ".") + 5 ),2);
-    if($pb > 26 || $pb == 0)
+    $hash = $new_string;
+    if(strlen($hash) > 9)
     {
-        //Generate the PB
-        mt_srand($time + (float)$hash + 10000);
-        $pb = mt_rand(1,26);
+        $hash = substr($hash, 0, 9);
     }
 
-    $wb = array(
-        1 => floatval(substr($valueout,(strpos($valueout, ".") + 7 ),2)),
-        2 => 0,
-        3 => 0,
-        4 => 0,
-        5 => 0
-    );
+    //First make sure the ticket fee minimum was paid, then if 
+    //more then 1 tickets worth was paid
+    //If 2 or more tickets paid for, randomly generated 
+    //tickets = number of tickets paid for, All tickets associated 
+    //with same address 
 
-    if($wb[1] > 69 || $wb[1] == 0)
+    //get the valueOut to the $lotto_address
+    (float)$amnt_paid = floatval($result_array[$i]['valueOut']);
+    (int)$total_tickets = floor($amnt_paid / 0.0003);
+    (int)$max_tickets = 10000;
+
+    if($total_tickets > $max_tickets)
     {
-        mt_srand($time + (float)$hash + 20000);
-        $pb = mt_rand(1,69);
+        $total_tickets = $max_tickets;
     }
 
-    $seed = ($time + (float)$hash + ($wb[1] * $pb));
-
-    //Generate the 4 white balls for a complete ticket, 
-    //1 Power Ball + 5 White Balls
-    mt_srand($seed + 30000);
-    $wb[2] = mt_rand(1,69);
-
-    mt_srand($seed + 40000);
-    $wb[3] = mt_rand(1,69);
-
-    mt_srand($seed + 50000);
-    $wb[4] = mt_rand(1,69);
-
-    mt_srand($seed + 60000);
-    $wb[5] = mt_rand(1,69);
-
-    //Make sure their are no duplicates for whites
-    for($d1 = 1; $d1 <= count($wb); $d1++)
-    {
-        for($d2 = 1; $d2 <= count($wb); $d2++)
+    if($amnt_paid >= 0.00030000 && $total_tickets < 2)
+    {                      
+        $valueout = number_format($result_array[$i]['valueOut'],8);
+        //Picks are the 4 last digits, 2 digits per number pick
+        $pb   = substr($valueout,(strpos($valueout, ".") + 5 ),2);
+        if($pb > 26 || $pb == 0)
         {
-            if($wb[$d1] == $wb[$d2] && $d1 != $d2)
-            {
-                //change the number
-                for($d3 = 1; $d3 <= 6; $d3++)
-                {
-                    //check if it will cause it to go over 69
-                    if(($wb[$d2] + $d3) > 69)
-                    {
-                        if(!in_array(($wb[$d2] - $d3),$wb))
-                        {
-                            $wb[$d2] = $wb[$d2] - $d3;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if(!in_array(($wb[$d2] + $d3),$wb))
-                        {
-                            $wb[$d2] = $wb[$d2] + $d3;
-                            break;
-                        }
-                    }
-                }
-            }
+            //Generate the PB
+            mt_srand($time + (float)$hash + 10000);
+            $pb = mt_rand(1,26);
         }
-    }
-
-    //add this address and picks to the $tickets array                    
-    $data = array(
-        'address' => $result_array[$i]['sender_address'],            
-        'picks' => array(0 => $pb,
-                         1 => $wb[1],
-                         2 => $wb[2],
-                         3 => $wb[3],
-                         4 => $wb[4],
-                         5 => $wb[5]
-                        )          
-        'win_amount' => 0,
-        'txs' => $result_array[$i]['txid'],
-    );
-
-    array_push($tickets,$data);
-}
-else if($amnt_paid > 0.00030000 && $total_tickets >= 2.0)
-{
-    //Loop number of tickets paid for
-    for($t = 1; $t <= $total_tickets; $t++)
-    {
-        //Do the same as above just dont get values after the 3, 
-        //instead generate all 6 numbers, 1PB + 5WB
-        $pb = 0;
 
         $wb = array(
-            1 => 0,
+            1 => floatval(substr($valueout,(strpos($valueout, ".") + 7 ),2)),
             2 => 0,
             3 => 0,
             4 => 0,
             5 => 0
         );
 
-        $seed = ($time + (float)$hash + ($t * 100));
+        if($wb[1] > 69 || $wb[1] == 0)
+        {
+            mt_srand($time + (float)$hash + 20000);
+            $pb = mt_rand(1,69);
+        }
 
-        //Generate the power ball
-        mt_srand($seed + 10000);
-        $pb = mt_rand(1,26);
+        $seed = ($time + (float)$hash + ($wb[1] * $pb));
 
-        //Generate the 5 white balls
-        mt_srand($seed + 20000);
-        $wb[1] = mt_rand(1,69);
-
+        //Generate the 4 white balls for a complete ticket, 
+        //1 Power Ball + 5 White Balls
         mt_srand($seed + 30000);
         $wb[2] = mt_rand(1,69);
 
@@ -268,20 +181,107 @@ else if($amnt_paid > 0.00030000 && $total_tickets >= 2.0)
                              3 => $wb[3],
                              4 => $wb[4],
                              5 => $wb[5]
-                            ),          
+                            )          
             'win_amount' => 0,
             'txs' => $result_array[$i]['txid'],
         );
 
         array_push($tickets,$data);
     }
-}
-else    
-{
-    //Ticket fee not paid!
-    continue;
-}
+    else if($amnt_paid > 0.00030000 && $total_tickets >= 2.0)
+    {
+        //Loop number of tickets paid for
+        for($t = 1; $t <= $total_tickets; $t++)
+        {
+            //Do the same as above just dont get values after the 3, 
+            //instead generate all 6 numbers, 1PB + 5WB
+            $pb = 0;
 
-//and then continues processing tickets, checking for winners etc..
-//Generating Finished
+            $wb = array(
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0
+            );
+
+            $seed = ($time + (float)$hash + ($t * 100));
+
+            //Generate the power ball
+            mt_srand($seed + 10000);
+            $pb = mt_rand(1,26);
+
+            //Generate the 5 white balls
+            mt_srand($seed + 20000);
+            $wb[1] = mt_rand(1,69);
+
+            mt_srand($seed + 30000);
+            $wb[2] = mt_rand(1,69);
+
+            mt_srand($seed + 40000);
+            $wb[3] = mt_rand(1,69);
+
+            mt_srand($seed + 50000);
+            $wb[4] = mt_rand(1,69);
+
+            mt_srand($seed + 60000);
+            $wb[5] = mt_rand(1,69);
+
+            //Make sure their are no duplicates for whites
+            for($d1 = 1; $d1 <= count($wb); $d1++)
+            {
+                for($d2 = 1; $d2 <= count($wb); $d2++)
+                {
+                    if($wb[$d1] == $wb[$d2] && $d1 != $d2)
+                    {
+                        //change the number
+                        for($d3 = 1; $d3 <= 6; $d3++)
+                        {
+                            //check if it will cause it to go over 69
+                            if(($wb[$d2] + $d3) > 69)
+                            {
+                                if(!in_array(($wb[$d2] - $d3),$wb))
+                                {
+                                    $wb[$d2] = $wb[$d2] - $d3;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if(!in_array(($wb[$d2] + $d3),$wb))
+                                {
+                                    $wb[$d2] = $wb[$d2] + $d3;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //add this address and picks to the $tickets array                    
+            $data = array(
+                'address' => $result_array[$i]['sender_address'],            
+                'picks' => array(0 => $pb,
+                                 1 => $wb[1],
+                                 2 => $wb[2],
+                                 3 => $wb[3],
+                                 4 => $wb[4],
+                                 5 => $wb[5]
+                                ),          
+                'win_amount' => 0,
+                'txs' => $result_array[$i]['txid'],
+            );
+
+            array_push($tickets,$data);
+        }
+    }
+    else    
+    {
+        //Ticket fee not paid!
+        continue;
+    }
+
+    //and then continues processing tickets, checking for winners etc..
+    //Generating Finished
 
