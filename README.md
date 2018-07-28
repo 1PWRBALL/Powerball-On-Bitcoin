@@ -16,8 +16,8 @@ BTC: 1PWRBALL6xwyfQnWSSnxVk9bFjq7J42edH
 
     JACKPOT
 
-    Jackpot Minimum starts at $5,000,000
-    If 6% of the Bitcoin Balance is greater then $5,000,000 , then thats the new Jackpot
+    Jackpot Minimum starts at $2,000
+    If 6% of the Bitcoin Balance is greater then $2,000 , then thats the new Jackpot
     Jackpot is split between winners of that drawing
 
 
